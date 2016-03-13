@@ -27,16 +27,9 @@ namespace SecurityDemo.Controllers
             return "sha512-"+Convert.ToBase64String(hash);
         }*/
 
-        public ActionResult About()
+        public ActionResult Csp1()
         {
             ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
 
             return View();
         }
