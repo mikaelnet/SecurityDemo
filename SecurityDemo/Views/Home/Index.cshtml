@@ -1,11 +1,52 @@
-﻿@{
+﻿@using System.Security.Cryptography
+@using System.Text
+@using SecurityDemo.Controllers
+@functions{
+    string GetShaHash(HtmlString text)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(text.ToString());
+        var hashString = new SHA512Managed();
+        byte[] hash = hashString.ComputeHash(bytes);
+        return "sha512-" + Convert.ToBase64String(hash);
+    }
+
+    string GetNonce()
+    {
+        const string validChars = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ1234567890";
+        char[] nonceChars = new char[25];
+        var rand = new Random((int)DateTime.Now.Ticks);
+        for (int i = 0; i < nonceChars.Length; i ++)
+        {
+            nonceChars[i] = validChars[rand.Next(0, validChars.Length - 1)];
+        }
+        return new string(nonceChars);
+    }
+}
+@{
     ViewBag.Title = "Home Page";
+
+    const string cspName = "Content-Security-Policy";
+    var csp = new StringBuilder("default-src 'self'; script-src 'self'");
+
+    var script = new HtmlString("document.writeln('<b>Cacheable content using sha512</b>');");
+    csp.AppendFormat(" '{0}'", GetShaHash(script));
+
+    var nonce = GetNonce();
+    csp.AppendFormat(" 'nonce-{0}'", nonce);
+
+    var script2 = new HtmlString("document.writeln('<b>sha script 2</b>')");
+    csp.AppendFormat(" '{0}'", GetShaHash(script2));
+
+    var link = new HtmlString("alert('hej'); return false;");
+    csp.AppendFormat(" {0}", GetShaHash(link));
+
+    Response.Headers.Add(cspName, csp.ToString());
 }
 
 <div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <p><a href="#" class="btn btn-primary btn-lg" onclick="@link">Learn more &raquo;</a></p>
 </div>
 
 <div class="row">
@@ -16,16 +57,28 @@
             enables a clean separation of concerns and gives you full control over markup
             for enjoyable, agile development.
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a>
+        </p>
     </div>
     <div class="col-md-4">
         <h2>Get more libraries</h2>
         <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a>
+        </p>
     </div>
     <div class="col-md-4">
         <h2>Web Hosting</h2>
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a>
+        </p>
     </div>
 </div>
+<script>@script</script>
+<script nonce="@nonce">
+    document.writeln('<i>Non-cacheable nonce script</i>');
+</script>
+<script>alert('This script will not run')</script>
+<script nonce="@nonce">
+    document.writeln("<p>Hello world</p>")
+</script>
+<script>@script2</script>
