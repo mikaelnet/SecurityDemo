@@ -11,11 +11,16 @@
 		@RenderBody()
 	</div>
 
+	<hr/>
 <footer>
 	<nav>
 		<ul>
 			<li>@Html.ActionLink("Start", "Index", "Home")</li>
-			<li>@Html.ActionLink("CSP 1", "Csp1", "Home")</li>
+			<li>@Html.ActionLink("CSP White list", "CspWhiteList", "Csp")</li>
+			<li>@Html.ActionLink("CSP Inline", "CspInline", "Csp")</li>
+			<li>@Html.ActionLink("CSP Hash", "CspHash", "Csp")</li>
+			<li>@Html.ActionLink("CSP Nounce", "CspNounce", "Csp")</li>
+			<li>@Html.ActionLink("CSP 1", "Csp1", "Csp")</li>
 		</ul>
 	</nav>
 </footer>

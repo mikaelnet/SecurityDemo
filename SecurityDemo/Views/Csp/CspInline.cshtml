@@ -1,0 +1,26 @@
+﻿@{
+    Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'");
+}
+<section>
+	<h1>Example of inline scripting</h1>
+	<p>
+		A inline non-signed script that performs document.writeln()<br />
+		<script>document.writeln("<b>Any inline script</b>");</script>
+	</p>
+	<p>
+		Any other script that is not intended are also executed<br />
+		<script>document.writeln("<b>unprotected XSS!</b>");</script>
+	</p>
+	<p>
+		External scripts are protected<br />
+		<script src="http://mikael.com/xss.js"></script>
+	</p>
+	
+	<h2>Conclusion</h2>
+	<dl>
+		<dt>Pros</dt>
+		<dd>Simple, protects against 3rd-party scripts</dd>
+		<dt>Cons</dt>
+		<dd>Does not protect from server side injects at all</dd>
+	</dl>
+</section>

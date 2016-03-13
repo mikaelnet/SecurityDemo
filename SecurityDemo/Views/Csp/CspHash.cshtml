@@ -1,0 +1,53 @@
+﻿@using System.Security.Cryptography
+@using System.Text
+@functions{
+    string GetShaHash(HtmlString text)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(text.ToString());
+        var hashString = new SHA512Managed();
+        byte[] hash = hashString.ComputeHash(bytes);
+        return "sha512-" + Convert.ToBase64String(hash);
+    }
+}
+@{
+    const string cspName = "Content-Security-Policy";
+    var csp = new StringBuilder("default-src 'self'; script-src 'self'");
+
+	var hashScript1 = new HtmlString("document.writeln('<b>Sha512-signed script</b>');");
+	csp.AppendFormat(" '{0}'", GetShaHash(hashScript1));
+
+	var hashScript2 = new HtmlString("document.writeln('<b>second Sha512-signed script</b>');");
+	csp.AppendFormat(" '{0}'", GetShaHash(hashScript2));
+
+    var incorectHashScript = "alert('Incorrect signed script')";
+	csp.AppendFormat(" '{0}'", GetShaHash(new HtmlString(incorectHashScript + " ")));
+
+    Response.Headers.Add(cspName, csp.ToString());
+}
+
+<section>
+	<h1>Example of hash signed scripts</h1>
+	<p>
+		A sha512-signed script that performs document.writeln()<br/>
+		<script>@hashScript1</script>
+	</p>
+	<p>
+		A second sha512-signed script that performs document.writeln()<br/>
+		<script>@hashScript2</script>
+	</p>
+	<p>
+		A script that is incorrectly signed performing alert()<br/>
+		<script>@incorectHashScript</script>
+	</p>
+	<p>
+		A inline unsigned script performing alert()<br/>
+		<script>alert('XSS!');</script>
+	</p>
+	<h2>Conclusion</h2>
+	<dl>
+		<dt>Pros</dt>
+		<dd>Secure, cacheable</dd>
+		<dt>Cons</dt>
+		<dd>Difficult</dd>
+	</dl>
+</section>

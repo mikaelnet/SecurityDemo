@@ -1,0 +1,47 @@
+﻿@using System.Text
+@functions{
+    string GetNonce()
+    {
+        const string validChars = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ1234567890";
+        char[] nonceChars = new char[25];
+        var rand = new Random((int)DateTime.Now.Ticks);
+        for (int i = 0; i < nonceChars.Length; i ++)
+        {
+            nonceChars[i] = validChars[rand.Next(0, validChars.Length - 1)];
+        }
+        return new string(nonceChars);
+    }
+}
+@{
+    var nonce = GetNonce();
+
+	var csp = string.Format("default-src 'self'; script-src 'self' 'nonce-{0}'", nonce);
+	Response.Headers.Add("Content-Security-Policy",  csp);
+}
+
+<section>
+	<h1>Example of nonce </h1>
+	<p>
+		A nounce-sign script that performs document.writeln()<br/>
+		<script nonce="@nonce">document.writeln("<b>Nonce-signed script</b>");</script>
+	</p>
+	<p>
+		A second nounce-sign script that performs document.writeln()<br/>
+		<script nonce="@nonce">document.writeln("<b>second nonce-signed script</b>");</script>
+	</p>
+	<p>
+		A script with incorrect nonce performing alert()<br/>
+		<script nonce="123456">alert('Incorrect nonce!')</script>
+	</p>
+	<p>
+		A inline unstamped script performing alert()<br/>
+		<script>alert('XSS!');</script>
+	</p>
+	<h2>Conclusion</h2>
+	<dl>
+		<dt>Pros</dt>
+		<dd>Simple, smaller header</dd>
+		<dt>Cons</dt>
+		<dd>Must ensure new strings. Can't cache</dd>
+	</dl>
+</section>

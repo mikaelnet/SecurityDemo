@@ -1,0 +1,17 @@
+﻿@{
+	Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self' https://ajax.googleapis.com");
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="/static/js/csp.js"></script>
+
+<section>
+	<h1>Example of white listed sources</h1>
+	<p>
+		White listed script sources are executed:<br/>
+		<b id="whiteListExample"></b>
+	</p>
+	<p>
+		External non-white listed scripts are not executed<br/>
+		<script src="http://mikael.com/xss.js"></script>
+	</p>
+</section>
