@@ -24,10 +24,5 @@ namespace SecurityDemo.Controllers
 		{
 			return View();
 		}
-
-		public ActionResult Csp1()
-		{
-			return View();
-		}
 	}
 }

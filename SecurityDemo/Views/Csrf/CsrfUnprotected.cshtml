@@ -1,0 +1,11 @@
+﻿<section>
+	<h1>Transfer money</h1>
+	@using (Html.BeginForm("Transfer", "Csrf", FormMethod.Post))
+	{
+		<label for="recipient">Recipient</label><br/>
+		<input type="text" id="recipient" name="recipient" /><br/>
+		<label for="amount">Amount</label><br/>
+		<input type="text" id="amount" name="amount" value="100" /><br />
+		<input type="submit" value="Transfer money" />
+	}
+</section>

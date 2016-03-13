@@ -1,0 +1,18 @@
+﻿@model SecurityDemo.Models.Account
+<section>
+	<h1>Welcome to the Bank</h1>
+	<p>
+		You're logged in as @Model.Owner
+	</p>
+	<p>
+		Your balance is @Model.Balance
+	</p>
+	@Html.ActionLink("Transfer money", "CsrfUnprotected")<br/>
+	@Html.ActionLink("Transfer money 2", "CsrfProtected")<br/>
+
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<a href="http://mikael.com/demo/aftonbladet.html">www.aftonbladet.se</a>
+</section>
