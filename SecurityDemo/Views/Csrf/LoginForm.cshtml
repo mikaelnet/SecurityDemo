@@ -3,9 +3,9 @@
 	@using (Html.BeginForm("Login", "Csrf", FormMethod.Post))
 	{
 		<label for="username">Username</label><br/>
-		<input type="text" id="username" name="username"/><br/>
+		<input type="text" id="username" name="username" autocomplete="off"/><br/>
 		<label for="password">Password</label><br/>
-		<input type="password" id="password" name="password"/><br/>
+		<input type="password" id="password" name="password" autocomplete="off"/><br/>
 		<input type="submit" value="Login"/>
 	}
 </section>
