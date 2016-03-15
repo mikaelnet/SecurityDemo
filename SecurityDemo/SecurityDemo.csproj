@@ -121,6 +121,7 @@
     <Compile Include="Controllers\CspController.cs" />
     <Compile Include="Controllers\CsrfController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\XxeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -162,6 +163,7 @@
     <Content Include="Views\Csrf\CsrfUnprotected.cshtml" />
     <Content Include="Views\Csrf\LoginForm.cshtml" />
     <Content Include="Views\Csrf\LoggedIn.cshtml" />
+    <Content Include="Views\Xxe\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

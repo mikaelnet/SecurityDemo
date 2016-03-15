@@ -1,0 +1,9 @@
+﻿@model SecurityDemo.Models.XxeModel
+<h2>XML External Entity</h2>
+
+@using (Html.BeginForm("Index", "Xxe"))
+{
+	<textarea id="str" name="str">@Model.Xml.OuterXml</textarea><br/>
+	<input type="submit"/>
+}
+
